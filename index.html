@@ -8,51 +8,67 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","Noto Sans",sans-serif;background:#f5f5f0;color:#2c2c2a;line-height:1.8;font-size:17px}
 .container{max-width:900px;margin:0 auto;padding:24px 20px}
-header{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#E6F1FB,#E1F5EE);border-radius:20px;margin-bottom:32px}
+header{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#E6F1FB,#E1F5EE);border-radius:20px;margin-bottom:28px}
 header h1{font-size:28px;font-weight:600;margin-bottom:6px}
-header .sub{font-size:18px;color:#5f5e5a;margin-bottom:16px}
-.personal-note{background:#fff;border-radius:16px;padding:20px 24px;margin:20px auto 0;max-width:600px;border-left:4px solid #378ADD;font-size:16px;color:#444441;line-height:1.9}
-.personal-note strong{color:#185FA5}
+header .sub{font-size:18px;color:#5f5e5a;margin-bottom:8px}
+.age-display{font-size:24px;font-weight:600;color:#185FA5;margin-top:12px}
 .lang-switch{display:flex;justify-content:center;gap:8px;margin-bottom:28px;position:sticky;top:12px;z-index:10}
 .lang-btn{padding:10px 24px;border-radius:12px;border:2px solid #d3d1c7;background:#fff;cursor:pointer;font-size:16px;font-weight:500;transition:all .2s;color:#5f5e5a}
 .lang-btn:hover{border-color:#888780}
 .lang-btn.active{background:#185FA5;color:#fff;border-color:#185FA5}
-.timeline{position:relative;padding-left:40px}
-.timeline::before{content:'';position:absolute;left:16px;top:0;bottom:0;width:3px;background:#d3d1c7;border-radius:2px}
-.month-card{position:relative;margin-bottom:28px;background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .2s}
-.month-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.month-card::before{content:'';position:absolute;left:-32px;top:28px;width:14px;height:14px;border-radius:50%;border:3px solid #d3d1c7;background:#fff;z-index:1}
-.month-card.past::before{background:#1D9E75;border-color:#1D9E75}
-.month-card.current::before{background:#378ADD;border-color:#378ADD;box-shadow:0 0 0 4px rgba(55,138,221,.25)}
-.month-card.future::before{background:#fff;border-color:#b4b2a9}
-.card-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-.card-header h2{font-size:22px;font-weight:600}
-.card-date{font-size:15px;color:#888780;margin-left:auto}
-.badge{font-size:13px;padding:4px 14px;border-radius:8px;font-weight:500}
-.badge.past{background:#E1F5EE;color:#0F6E56}
-.badge.current{background:#E6F1FB;color:#185FA5}
-.badge.future{background:#F1EFE8;color:#5f5e5a}
-.section{margin-bottom:16px}
-.section:last-child{margin-bottom:0}
-.section-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;margin-bottom:6px}
+.legend{display:flex;gap:20px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:15px;color:#5f5e5a}
 .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
 .dot.growth{background:#1D9E75}
 .dot.dev{background:#7F77DD}
 .dot.parent{background:#D85A30}
+.current-card{background:#fff;border:2.5px solid #378ADD;border-radius:18px;padding:28px 28px 24px;margin-bottom:28px;box-shadow:0 2px 12px rgba(55,138,221,.12)}
+.current-card .card-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.current-card .card-header h2{font-size:24px;font-weight:600;color:#185FA5}
+.current-card .card-date{font-size:15px;color:#888780;margin-left:auto}
+.badge{font-size:13px;padding:4px 14px;border-radius:8px;font-weight:500}
+.badge.current{background:#E6F1FB;color:#185FA5}
+.badge.past{background:#E1F5EE;color:#0F6E56}
+.badge.future{background:#F1EFE8;color:#5f5e5a}
+.section{margin-bottom:16px}
+.section:last-child{margin-bottom:0}
+.section-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;margin-bottom:6px}
 .section-body{font-size:17px;line-height:1.9;padding-left:18px;color:#444441}
-.legend{display:flex;gap:20px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:15px;color:#5f5e5a}
-.personal-highlight{background:#FFF9E6;border:1px dashed #EF9F27;border-radius:10px;padding:12px 16px;margin-top:12px;font-size:16px;color:#633806;line-height:1.8}
+.personal-highlight{background:#FFF9E6;border-left:4px solid #EF9F27;border-radius:0 10px 10px 0;padding:14px 18px;margin-top:14px;font-size:16px;color:#633806;line-height:1.8}
 .personal-highlight strong{color:#854F0B}
+.collapsible{border:1.5px solid #d3d1c7;border-radius:16px;margin-bottom:16px;overflow:hidden;background:#fff}
+.collapsible-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;background:#fafaf7;user-select:none;transition:background .2s}
+.collapsible-header:hover{background:#f0efe8}
+.collapsible-header h3{font-size:18px;font-weight:600;display:flex;align-items:center;gap:10px}
+.collapsible-header .arrow{transition:transform .3s;font-size:14px;color:#888780}
+.collapsible-header .arrow.open{transform:rotate(180deg)}
+.collapsible-header .count{font-size:14px;color:#888780;font-weight:400}
+.collapsible-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.collapsible-body.open{max-height:none}
+.collapsible-body .inner{padding:8px 16px 16px}
+.mini-card{border:1px solid #e8e7e2;border-radius:12px;padding:18px 20px;margin-bottom:12px;background:#fff;cursor:pointer;transition:all .2s}
+.mini-card:hover{border-color:#b4b2a9;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mini-card:last-child{margin-bottom:0}
+.mini-card-header{display:flex;align-items:center;justify-content:space-between}
+.mini-card-header h4{font-size:17px;font-weight:500;display:flex;align-items:center;gap:8px}
+.mini-card-header .mini-date{font-size:14px;color:#888780}
+.mini-card-header .mini-arrow{font-size:12px;color:#b4b2a9;transition:transform .3s}
+.mini-card-header .mini-arrow.open{transform:rotate(180deg)}
+.mini-card .mini-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.mini-card .mini-dot.past{background:#1D9E75}
+.mini-card .mini-dot.future{background:#b4b2a9}
+.mini-card-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.mini-card-body.open{max-height:none}
+.mini-card-body .mini-inner{padding-top:14px}
 footer{text-align:center;padding:32px 20px;color:#888780;font-size:14px;line-height:1.8}
 @media(max-width:600px){
   body{font-size:16px}
   .container{padding:16px 12px}
   header h1{font-size:24px}
-  .month-card{padding:18px 20px}
-  .timeline{padding-left:32px}
-  .month-card::before{left:-24px}
-  .card-date{margin-left:0;width:100%}
+  .current-card{padding:20px 18px 18px}
+  .collapsible-header{padding:14px 16px}
+  .mini-card{padding:14px 16px}
+  .current-card .card-date{margin-left:0;width:100%}
 }
 </style>
 </head>
@@ -61,8 +77,7 @@ footer{text-align:center;padding:32px 20px;color:#888780;font-size:14px;line-hei
 <header>
   <h1 id="title"></h1>
   <div class="sub" id="subtitle"></div>
-  <div class="personal-note" id="personal-note"></div>
-  <div style="margin-top:16px;font-size:20px;font-weight:600;color:#185FA5" id="baby-age"></div>
+  <div class="age-display" id="baby-age"></div>
 </header>
 
 <div class="lang-switch">
@@ -71,7 +86,9 @@ footer{text-align:center;padding:32px 20px;color:#888780;font-size:14px;line-hei
 </div>
 
 <div class="legend" id="legend"></div>
-<div class="timeline" id="timeline"></div>
+<div id="current-section"></div>
+<div id="past-section"></div>
+<div id="future-section"></div>
 <footer id="footer"></footer>
 </div>
 
@@ -80,11 +97,13 @@ const i18n = {
   zh: {
     title: "寶寶成長時間表",
     subtitle: "出生日期：2025 年 10 月 11 日（中午 12:30）",
-    personalNote: "寶寶現在 <strong>6 個月又 13 天</strong>，能夠獨坐約 <strong>4 分鐘</strong>，一直想站立，有人扶著時可以站約 <strong>1 分鐘</strong>。發展得很棒！",
     legend: ["身體成長", "發展里程碑", "父母注意事項"],
     badgePast: "已完成", badgeCurrent: "目前階段", badgeFuture: "即將到來",
     sectionTitles: ["身體成長", "發展里程碑", "父母注意事項"],
     footer: "每個寶寶的發展速度不同，此表為一般參考。如有疑慮請諮詢小兒科醫師。",
+    pastLabel: "已過去的月份",
+    futureLabel: "未來的月份",
+    clickToExpand: "點擊展開",
     months: [
       {
         label: "新生兒", date: "2025/10/11 ~ 11/10",
@@ -127,8 +146,8 @@ const i18n = {
         growth: "體重約 7.5~8.5 kg，身長約 65~70 cm。出生體重已接近三倍。可能開始長第一顆牙（下排門牙）。部分寶寶開始嘗試坐。",
         dev: "能獨坐幾秒鐘（需支撐）。雙手協調能力提升，能主動抓握並探索物品。開始理解因果關係（按按鈕會發出聲音）。分離焦慮開始萌芽。喜歡「躲貓貓」遊戲。",
         parent: "正式進入副食品階段，嘗試多種食材（蔬菜泥、水果泥、蛋黃等）。注意過敏反應的觀察。安排六個月健兒門診與疫苗接種。開始使用學習杯練習喝水。居家安全再次檢查（插座、桌角、小物品）。",
-        personalZh: "【6 個月 13 天・2026/4/24 紀錄】獨坐約 4 分鐘（超出同齡平均），一直想站立，扶站可維持約 1 分鐘，核心肌群和腿部力量發展優秀。趴著時已能原地旋轉（pivot），爸爸用手掌在腳底當基座協助練習蹬爬。目前還無法往前爬，會因此對自己生氣——這是正常的挫折反應，代表移動動機很強。醫師建議：多創造地板自由活動時間，使用瑜伽墊/巧拼增加摩擦力，在前方 30~50 cm 放誘因玩具，嘗試用毛巾墊在肚子下方練習四點跪姿，不需急著練站走，優先發展爬行。",
-        personalVi: "【6 tháng 13 ngày・24/04/2026 ghi chú】Ngồi một mình khoảng 4 phút (vượt trội so với bé cùng tháng), luôn muốn đứng, khi có người đỡ đứng được khoảng 1 phút — cơ lõi và chân phát triển rất tốt. Khi nằm sấp đã biết xoay tròn tại chỗ (pivot), bố dùng lòng bàn tay đặt ở lòng bàn chân bé làm điểm tựa để bé tập đạp tiến về phía trước. Hiện chưa bò được về phía trước, bé tự cáu vì không tiến được — đây là phản ứng thất vọng bình thường, cho thấy bé rất muốn di chuyển. Bác sĩ khuyên: tạo nhiều thời gian hoạt động tự do trên sàn, dùng thảm yoga/thảm xốp tăng ma sát, đặt đồ chơi hấp dẫn cách 30~50 cm phía trước, thử dùng khăn cuộn đỡ dưới bụng tập tư thế quỳ 4 điểm, không cần vội tập đứng đi, ưu tiên phát triển bò."
+        personalZh: "【6 個月 13 天・2026/4/24 紀錄】獨坐約 4 分鐘（超出同齡平均），一直想站立，扶站可維持約 1 分鐘，核心肌群和腿部力量發展優秀。趴著時已能原地旋轉（pivot），爸爸用手掌在腳底當基座協助練習蹬爬。目前還無法往前爬，會因此對自己生氣——這是正常的挫折反應，代表移動動機很強。醫師建議：多創造地板自由活動時間，使用瑜伽墊/巧拼增加摩擦力，在前方 30~50 cm 放誘因玩具，嘗試用毛巾墊在肚子下方練習四點跪姿，不需急著練站走，優先發展爬行。\n\n【6 個月 13 天・2026/4/24 Q&A】動物性蛋白質（雞肉、豬肉、牛肉）何時可以開始嘗試？——滿 6 個月即可開始，寶寶現在就能試。建議順序：雞肉（最溫和）→ 豬肉 → 牛肉（鐵含量最高）。處理方式：煮熟後打成細泥，可混入已習慣的米糊或蔬菜泥。1 歲前不加鹽、糖等調味料。每次 1-2 小茶匙，每種新食材間隔 2-3 天觀察過敏反應（出疹、腹瀉、嘔吐）。蛋白和帶殼海鮮過敏風險較高，建議晚一點再試；蛋黃可同期嘗試。",
+        personalVi: "【6 tháng 13 ngày・24/04/2026 ghi chú】Ngồi một mình khoảng 4 phút (vượt trội so với bé cùng tháng), luôn muốn đứng, khi có người đỡ đứng được khoảng 1 phút — cơ lõi và chân phát triển rất tốt. Khi nằm sấp đã biết xoay tròn tại chỗ (pivot), bố dùng lòng bàn tay đặt ở lòng bàn chân bé làm điểm tựa để bé tập đạp tiến về phía trước. Hiện chưa bò được về phía trước, bé tự cáu vì không tiến được — đây là phản ứng thất vọng bình thường, cho thấy bé rất muốn di chuyển. Bác sĩ khuyên: tạo nhiều thời gian hoạt động tự do trên sàn, dùng thảm yoga/thảm xốp tăng ma sát, đặt đồ chơi hấp dẫn cách 30~50 cm phía trước, thử dùng khăn cuộn đỡ dưới bụng tập tư thế quỳ 4 điểm, không cần vội tập đứng đi, ưu tiên phát triển bò.\n\n【6 tháng 13 ngày・24/04/2026 Hỏi & Đáp】Khi nào bé có thể thử protein động vật (thịt gà, thịt heo, thịt bò)? — Từ 6 tháng tuổi là có thể bắt đầu, bé hiện tại đã đủ tuổi. Thứ tự khuyến nghị: thịt gà (nhẹ nhàng nhất) → thịt heo → thịt bò (giàu sắt nhất). Cách chế biến: nấu chín rồi xay nhuyễn, có thể trộn vào bột gạo hoặc rau xay mà bé đã quen. Trước 1 tuổi không thêm muối, đường hay gia vị. Mỗi lần 1-2 thìa cà phê, mỗi loại thực phẩm mới cách nhau 2-3 ngày để theo dõi dị ứng (nổi mẩn, tiêu chảy, nôn). Lòng trắng trứng và hải sản có vỏ có nguy cơ dị ứng cao hơn, nên thử muộn hơn; lòng đỏ trứng có thể thử cùng thời điểm."
       },
       {
         label: "7 個月", date: "2026/5/11 ~ 6/10",
@@ -171,11 +190,13 @@ const i18n = {
   vi: {
     title: "Bảng theo dõi phát triển của bé",
     subtitle: "Ngày sinh: 11 tháng 10 năm 2025 (12:30 trưa)",
-    personalNote: "Hiện tại bé được <strong>6 tháng 13 ngày</strong>, có thể ngồi một mình khoảng <strong>4 phút</strong>, luôn muốn đứng, khi có người đỡ có thể đứng khoảng <strong>1 phút</strong>. Bé phát triển rất tốt!",
     legend: ["Phát triển thể chất", "Mốc phát triển", "Lưu ý cho bố mẹ"],
     badgePast: "Đã qua", badgeCurrent: "Giai đoạn hiện tại", badgeFuture: "Sắp tới",
     sectionTitles: ["Phát triển thể chất", "Mốc phát triển", "Lưu ý cho bố mẹ"],
     footer: "Mỗi bé phát triển theo tốc độ riêng, bảng này chỉ mang tính tham khảo. Nếu có thắc mắc, hãy tham khảo ý kiến bác sĩ nhi khoa.",
+    pastLabel: "Các tháng đã qua",
+    futureLabel: "Các tháng sắp tới",
+    clickToExpand: "Nhấn để mở",
     months: [
       {
         label: "Sơ sinh", date: "11/10 ~ 10/11/2025",
@@ -270,12 +291,12 @@ function setLang(lang) {
 }
 
 function getStatus(m) {
-  const today = new Date(2026, 3, 24);
+  const now = new Date();
   const d = new Date(2025, 9 + m, 11);
-  if (m === 12) return today >= d ? 'past' : 'future';
+  if (m === 12) return now >= d ? 'past' : 'future';
   const next = new Date(2025, 9 + m + 1, 11);
-  if (today >= next) return 'past';
-  if (today >= d) return 'current';
+  if (now >= next) return 'past';
+  if (now >= d) return 'current';
   return 'future';
 }
 
@@ -288,11 +309,50 @@ function calcAge() {
   return { months, days };
 }
 
+function toggleCollapsible(id) {
+  const body = document.getElementById(id);
+  const arrow = document.getElementById(id + '-arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+function toggleMiniCard(id) {
+  const body = document.getElementById(id);
+  const arrow = document.getElementById(id + '-arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+function buildSections(m, i, t) {
+  const zhMonth = i18n.zh.months[i];
+  let personalHtml = '';
+  if (zhMonth.personalZh || zhMonth.personalVi) {
+    const pText = currentLang === 'zh' ? zhMonth.personalZh : zhMonth.personalVi;
+    if (pText) {
+      personalHtml = `<div class="personal-highlight"><strong>${currentLang === 'zh' ? '寶寶的個人紀錄' : 'Ghi chú cá nhân của bé'}:</strong><br>${pText.replace(/\\n/g, '<br>')}</div>`;
+    }
+  }
+  return `
+    <div class="section">
+      <div class="section-title"><span class="dot growth"></span>${t.sectionTitles[0]}</div>
+      <div class="section-body">${m.growth}</div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span class="dot dev"></span>${t.sectionTitles[1]}</div>
+      <div class="section-body">${m.dev}</div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span class="dot parent"></span>${t.sectionTitles[2]}</div>
+      <div class="section-body">${m.parent}</div>
+    </div>
+    ${personalHtml}
+  `;
+}
+
 function render() {
   const t = i18n[currentLang];
   document.getElementById('title').textContent = t.title;
   document.getElementById('subtitle').textContent = t.subtitle;
-  document.getElementById('personal-note').innerHTML = t.personalNote;
   document.getElementById('footer').textContent = t.footer;
   const age = calcAge();
   const ageEl = document.getElementById('baby-age');
@@ -309,44 +369,100 @@ function render() {
     legendEl.innerHTML += `<span class="legend-item"><span class="dot ${dots[i]}"></span>${l}</span>`;
   });
 
-  const timeline = document.getElementById('timeline');
-  timeline.innerHTML = '';
+  const pastMonths = [];
+  const currentMonths = [];
+  const futureMonths = [];
+
   t.months.forEach((m, i) => {
     const s = getStatus(i);
-    const badge = s === 'past' ? t.badgePast : s === 'current' ? t.badgeCurrent : t.badgeFuture;
+    if (s === 'past') pastMonths.push({ m, i, s });
+    else if (s === 'current') currentMonths.push({ m, i, s });
+    else futureMonths.push({ m, i, s });
+  });
 
-    let personalHtml = '';
-    const zhMonth = i18n.zh.months[i];
-    if (zhMonth.personalZh || zhMonth.personalVi) {
-      const pText = currentLang === 'zh' ? zhMonth.personalZh : zhMonth.personalVi;
-      if (pText) {
-        personalHtml = `<div class="personal-highlight"><strong>${currentLang === 'zh' ? '寶寶的個人紀錄' : 'Ghi chú cá nhân của bé'}:</strong> ${pText}</div>`;
-      }
-    }
-
-    timeline.innerHTML += `
-      <div class="month-card ${s}">
+  // Current section - always visible at top
+  const currentEl = document.getElementById('current-section');
+  currentEl.innerHTML = '';
+  currentMonths.forEach(({ m, i }) => {
+    currentEl.innerHTML += `
+      <div class="current-card">
         <div class="card-header">
           <h2>${m.label}</h2>
-          <span class="badge ${s}">${badge}</span>
+          <span class="badge current">${t.badgeCurrent}</span>
           <span class="card-date">${m.date}</span>
         </div>
-        <div class="section">
-          <div class="section-title"><span class="dot growth"></span>${t.sectionTitles[0]}</div>
-          <div class="section-body">${m.growth}</div>
-        </div>
-        <div class="section">
-          <div class="section-title"><span class="dot dev"></span>${t.sectionTitles[1]}</div>
-          <div class="section-body">${m.dev}</div>
-        </div>
-        <div class="section">
-          <div class="section-title"><span class="dot parent"></span>${t.sectionTitles[2]}</div>
-          <div class="section-body">${m.parent}</div>
-        </div>
-        ${personalHtml}
+        ${buildSections(m, i, t)}
       </div>
     `;
   });
+
+  // Past section - collapsible
+  const pastEl = document.getElementById('past-section');
+  pastEl.innerHTML = '';
+  if (pastMonths.length > 0) {
+    const firstLabel = pastMonths[0].m.label;
+    const lastLabel = pastMonths[pastMonths.length - 1].m.label;
+    let miniCards = '';
+    pastMonths.forEach(({ m, i }, idx) => {
+      miniCards += `
+        <div class="mini-card" onclick="toggleMiniCard('past-mini-${idx}')">
+          <div class="mini-card-header">
+            <h4><span class="mini-dot past"></span>${m.label}</h4>
+            <span class="mini-date">${m.date}</span>
+            <span class="mini-arrow" id="past-mini-${idx}-arrow">&#9660;</span>
+          </div>
+          <div class="mini-card-body" id="past-mini-${idx}">
+            <div class="mini-inner">${buildSections(m, i, t)}</div>
+          </div>
+        </div>
+      `;
+    });
+    pastEl.innerHTML = `
+      <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible('past-body')">
+          <h3><span class="arrow" id="past-body-arrow">&#9660;</span>${t.pastLabel}（${firstLabel} ~ ${lastLabel}）</h3>
+          <span class="count">${pastMonths.length} ${currentLang === 'zh' ? '個月份' : 'tháng'}</span>
+        </div>
+        <div class="collapsible-body" id="past-body">
+          <div class="inner">${miniCards}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Future section - collapsible
+  const futureEl = document.getElementById('future-section');
+  futureEl.innerHTML = '';
+  if (futureMonths.length > 0) {
+    const firstLabel = futureMonths[0].m.label;
+    const lastLabel = futureMonths[futureMonths.length - 1].m.label;
+    let miniCards = '';
+    futureMonths.forEach(({ m, i }, idx) => {
+      miniCards += `
+        <div class="mini-card" onclick="toggleMiniCard('future-mini-${idx}')">
+          <div class="mini-card-header">
+            <h4><span class="mini-dot future"></span>${m.label}</h4>
+            <span class="mini-date">${m.date}</span>
+            <span class="mini-arrow" id="future-mini-${idx}-arrow">&#9660;</span>
+          </div>
+          <div class="mini-card-body" id="future-mini-${idx}">
+            <div class="mini-inner">${buildSections(m, i, t)}</div>
+          </div>
+        </div>
+      `;
+    });
+    futureEl.innerHTML = `
+      <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible('future-body')">
+          <h3><span class="arrow" id="future-body-arrow">&#9660;</span>${t.futureLabel}（${firstLabel} ~ ${lastLabel}）</h3>
+          <span class="count">${futureMonths.length} ${currentLang === 'zh' ? '個月份' : 'tháng'}</span>
+        </div>
+        <div class="collapsible-body" id="future-body">
+          <div class="inner">${miniCards}</div>
+        </div>
+      </div>
+    `;
+  }
 }
 
 render();
