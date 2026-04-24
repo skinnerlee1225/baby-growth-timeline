@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寶寶成長時間表 | Bảng theo dõi phát triển của bé</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","Noto Sans",sans-serif;background:#f5f5f0;color:#2c2c2a;line-height:1.8;font-size:17px}
+.container{max-width:900px;margin:0 auto;padding:24px 20px}
+header{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#E6F1FB,#E1F5EE);border-radius:20px;margin-bottom:32px}
+header h1{font-size:28px;font-weight:600;margin-bottom:6px}
+header .sub{font-size:18px;color:#5f5e5a;margin-bottom:16px}
+.personal-note{background:#fff;border-radius:16px;padding:20px 24px;margin:20px auto 0;max-width:600px;border-left:4px solid #378ADD;font-size:16px;color:#444441;line-height:1.9}
+.personal-note strong{color:#185FA5}
+.lang-switch{display:flex;justify-content:center;gap:8px;margin-bottom:28px;position:sticky;top:12px;z-index:10}
+.lang-btn{padding:10px 24px;border-radius:12px;border:2px solid #d3d1c7;background:#fff;cursor:pointer;font-size:16px;font-weight:500;transition:all .2s;color:#5f5e5a}
+.lang-btn:hover{border-color:#888780}
+.lang-btn.active{background:#185FA5;color:#fff;border-color:#185FA5}
+.timeline{position:relative;padding-left:40px}
+.timeline::before{content:'';position:absolute;left:16px;top:0;bottom:0;width:3px;background:#d3d1c7;border-radius:2px}
+.month-card{position:relative;margin-bottom:28px;background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .2s}
+.month-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.month-card::before{content:'';position:absolute;left:-32px;top:28px;width:14px;height:14px;border-radius:50%;border:3px solid #d3d1c7;background:#fff;z-index:1}
+.month-card.past::before{background:#1D9E75;border-color:#1D9E75}
+.month-card.current::before{background:#378ADD;border-color:#378ADD;box-shadow:0 0 0 4px rgba(55,138,221,.25)}
+.month-card.future::before{background:#fff;border-color:#b4b2a9}
+.card-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.card-header h2{font-size:22px;font-weight:600}
+.card-date{font-size:15px;color:#888780;margin-left:auto}
+.badge{font-size:13px;padding:4px 14px;border-radius:8px;font-weight:500}
+.badge.past{background:#E1F5EE;color:#0F6E56}
+.badge.current{background:#E6F1FB;color:#185FA5}
+.badge.future{background:#F1EFE8;color:#5f5e5a}
+.section{margin-bottom:16px}
+.section:last-child{margin-bottom:0}
+.section-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;margin-bottom:6px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+.dot.growth{background:#1D9E75}
+.dot.dev{background:#7F77DD}
+.dot.parent{background:#D85A30}
+.section-body{font-size:17px;line-height:1.9;padding-left:18px;color:#444441}
+.legend{display:flex;gap:20px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:15px;color:#5f5e5a}
+.personal-highlight{background:#FFF9E6;border:1px dashed #EF9F27;border-radius:10px;padding:12px 16px;margin-top:12px;font-size:16px;color:#633806;line-height:1.8}
+.personal-highlight strong{color:#854F0B}
+footer{text-align:center;padding:32px 20px;color:#888780;font-size:14px;line-height:1.8}
+@media(max-width:600px){
+  body{font-size:16px}
+  .container{padding:16px 12px}
+  header h1{font-size:24px}
+  .month-card{padding:18px 20px}
+  .timeline{padding-left:32px}
+  .month-card::before{left:-24px}
+  .card-date{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1 id="title"></h1>
+  <div class="sub" id="subtitle"></div>
+  <div class="personal-note" id="personal-note"></div>
+  <div style="margin-top:16px;font-size:20px;font-weight:600;color:#185FA5" id="baby-age"></div>
+</header>
+
+<div class="lang-switch">
+  <button class="lang-btn active" onclick="setLang('zh')">繁體中文</button>
+  <button class="lang-btn" onclick="setLang('vi')">Tiếng Việt</button>
+</div>
+
+<div class="legend" id="legend"></div>
+<div class="timeline" id="timeline"></div>
+<footer id="footer"></footer>
+</div>
+
+<script>
+const i18n = {
+  zh: {
+    title: "寶寶成長時間表",
+    subtitle: "出生日期：2025 年 10 月 11 日（中午 12:30）",
+    personalNote: "寶寶現在 <strong>6 個月又 13 天</strong>，能夠獨坐約 <strong>4 分鐘</strong>，一直想站立，有人扶著時可以站約 <strong>1 分鐘</strong>。發展得很棒！",
+    legend: ["身體成長", "發展里程碑", "父母注意事項"],
+    badgePast: "已完成", badgeCurrent: "目前階段", badgeFuture: "即將到來",
+    sectionTitles: ["身體成長", "發展里程碑", "父母注意事項"],
+    footer: "每個寶寶的發展速度不同，此表為一般參考。如有疑慮請諮詢小兒科醫師。",
+    months: [
+      {
+        label: "新生兒", date: "2025/10/11 ~ 11/10",
+        growth: "體重約 2.5~4 kg，身長約 48~52 cm。大部分時間在睡覺（每天 16~18 小時），吃奶間隔約 2~3 小時。臍帶殘端尚未脫落。",
+        dev: "視力模糊，只能看清 20~30 公分距離。有原始反射（抓握反射、驚嚇反射、吸吮反射）。能辨識媽媽的聲音和氣味。",
+        parent: "注意臍帶護理，保持乾燥清潔。建立餵奶節奏（母乳或配方奶）。留意黃疸變化，必要時回診。產後媽媽也要注意休息與情緒，爸爸盡量分擔夜間照顧。"
+      },
+      {
+        label: "1 個月", date: "2025/11/11 ~ 12/10",
+        growth: "體重增加約 1 kg，身長增加約 3~4 cm。開始有比較規律的吃奶模式。皮膚可能出現新生兒痤瘡（嬰兒粉刺）。",
+        dev: "短暫的趴著抬頭動作。眼睛開始能追蹤緩慢移動的物體。清醒時間稍微延長。對聲音有反應，會被突然的聲響嚇到。",
+        parent: "開始安排預防接種計畫（B 型肝炎第二劑）。多與寶寶面對面說話，促進親子連結。注意溢奶與拍嗝技巧。留意寶寶哭鬧的模式與需求。"
+      },
+      {
+        label: "2 個月", date: "2025/12/11 ~ 2026/1/10",
+        growth: "體重約 5~6 kg。開始出現「社交性微笑」，不再只是反射性微笑。睡眠時間開始略為集中在夜間。",
+        dev: "趴著時能短暫抬頭 45 度。開始發出「咕咕」、「啊」等聲音。對人臉特別感興趣，會盯著看。手偶爾會張開。",
+        parent: "接種五合一疫苗、肺炎鏈球菌疫苗等。寶寶開始能區分白天與夜晚，可以建立簡單的作息。注意寶寶的頭型（避免長時間同一姿勢躺），適當 tummy time 訓練。"
+      },
+      {
+        label: "3 個月", date: "2026/1/11 ~ 2/10",
+        growth: "體重約 6~7 kg，出生體重大約翻倍。頸部肌肉更有力，頭部控制進步明顯。手掌開始有意識地張開與握拳。",
+        dev: "趴著時能較穩定抬頭，用前臂撐起。開始大笑出聲。雙手可以碰在一起。開始嘗試伸手抓東西（但不太準確）。對鏡中的自己感興趣。",
+        parent: "可以開始使用黑白/彩色對比卡片刺激視覺。增加 tummy time 時間與頻率。留意寶寶的口水量增加（並不代表馬上要長牙）。三個月大常見的「黃昏哭鬧」可能達到高峰。"
+      },
+      {
+        label: "4 個月", date: "2026/2/11 ~ 3/10",
+        growth: "體重約 6.5~7.5 kg。開始出現翻身的跡象（通常先從趴翻仰）。口水變多，喜歡把手和東西放進嘴裡。",
+        dev: "能穩定抬頭 90 度。伸手抓握玩具的準確度提高。開始發出更多元的聲音，嘗試模仿語調。對周圍環境更加好奇。能辨認熟悉的面孔。",
+        parent: "評估是否準備好開始嘗試副食品（通常建議 4~6 個月間開始）。注意寶寶的翻身安全，床上不放柔軟物品。選擇安全的固齒器緩解口腔不適。可以開始建立睡前儀式。"
+      },
+      {
+        label: "5 個月", date: "2026/3/11 ~ 4/10",
+        growth: "體重約 7~8 kg。大多數寶寶已經能熟練翻身。肌肉力量持續增強，趴著時能用手臂撐起上半身。",
+        dev: "開始對食物表現出興趣（看大人吃東西會流口水、伸手）。能把東西從一隻手換到另一隻手。開始認生，對陌生人有警覺。發出連續音節如「ba-ba」、「ma-ma」（但還沒有意義）。",
+        parent: "如尚未開始副食品，可考慮嘗試十倍粥或米糊。寶寶活動範圍擴大，加強居家安全防護。繼續親子共讀與說話互動。注意寶寶是否開始長牙的跡象（牙齦紅腫、低燒、煩躁）。"
+      },
+      {
+        label: "6 個月", date: "2026/4/11 ~ 5/10",
+        growth: "體重約 7.5~8.5 kg，身長約 65~70 cm。出生體重已接近三倍。可能開始長第一顆牙（下排門牙）。部分寶寶開始嘗試坐。",
+        dev: "能獨坐幾秒鐘（需支撐）。雙手協調能力提升，能主動抓握並探索物品。開始理解因果關係（按按鈕會發出聲音）。分離焦慮開始萌芽。喜歡「躲貓貓」遊戲。",
+        parent: "正式進入副食品階段，嘗試多種食材（蔬菜泥、水果泥、蛋黃等）。注意過敏反應的觀察。安排六個月健兒門診與疫苗接種。開始使用學習杯練習喝水。居家安全再次檢查（插座、桌角、小物品）。",
+        personalZh: "【6 個月 13 天・2026/4/24 紀錄】獨坐約 4 分鐘（超出同齡平均），一直想站立，扶站可維持約 1 分鐘，核心肌群和腿部力量發展優秀。趴著時已能原地旋轉（pivot），爸爸用手掌在腳底當基座協助練習蹬爬。目前還無法往前爬，會因此對自己生氣——這是正常的挫折反應，代表移動動機很強。醫師建議：多創造地板自由活動時間，使用瑜伽墊/巧拼增加摩擦力，在前方 30~50 cm 放誘因玩具，嘗試用毛巾墊在肚子下方練習四點跪姿，不需急著練站走，優先發展爬行。",
+        personalVi: "【6 tháng 13 ngày・24/04/2026 ghi chú】Ngồi một mình khoảng 4 phút (vượt trội so với bé cùng tháng), luôn muốn đứng, khi có người đỡ đứng được khoảng 1 phút — cơ lõi và chân phát triển rất tốt. Khi nằm sấp đã biết xoay tròn tại chỗ (pivot), bố dùng lòng bàn tay đặt ở lòng bàn chân bé làm điểm tựa để bé tập đạp tiến về phía trước. Hiện chưa bò được về phía trước, bé tự cáu vì không tiến được — đây là phản ứng thất vọng bình thường, cho thấy bé rất muốn di chuyển. Bác sĩ khuyên: tạo nhiều thời gian hoạt động tự do trên sàn, dùng thảm yoga/thảm xốp tăng ma sát, đặt đồ chơi hấp dẫn cách 30~50 cm phía trước, thử dùng khăn cuộn đỡ dưới bụng tập tư thế quỳ 4 điểm, không cần vội tập đứng đi, ưu tiên phát triển bò."
+      },
+      {
+        label: "7 個月", date: "2026/5/11 ~ 6/10",
+        growth: "體重約 8~9 kg。坐得更穩，不太需要支撐。可能開始嘗試爬行姿勢（搖晃身體）。乳牙可能持續冒出。",
+        dev: "能夠獨坐並騰出雙手玩玩具。開始嘗試匍匐前進或肚子貼地爬。對名字有反應，聽到會轉頭。開始理解簡單的詞彙如「不行」。喜歡敲打物品製造聲音。",
+        parent: "副食品質地可從泥狀逐漸進展到碎狀。家中低矮處的危險物品要收好。可以開始引入手指食物（如軟煮紅蘿蔔條）讓寶寶練習自己吃。鼓勵爬行，對大腦發育很重要。"
+      },
+      {
+        label: "8 個月", date: "2026/6/11 ~ 7/10",
+        growth: "體重約 8.5~9.5 kg。爬行能力進步迅速。可能開始嘗試扶著東西站起來。小肌肉（手指）精細動作進步。",
+        dev: "用拇指和食指拿小東西（鉗式抓握萌芽）。爬行速度加快。分離焦慮達到高峰期，黏人程度增加。開始模仿簡單的動作（拍手、揮手）。喜歡把東西丟到地上看大人撿。",
+        parent: "注意寶寶爬行安全：樓梯口裝柵欄、桌角貼防撞條。耐心面對分離焦慮期，不要偷偷離開。副食品種類持續擴充，一天可吃 2~3 餐副食品。睡眠可能因分離焦慮出現倒退。"
+      },
+      {
+        label: "9 個月", date: "2026/7/11 ~ 8/10",
+        growth: "體重約 8.5~10 kg。能扶著家具側移（扶走）。手部精細動作更加靈活，鉗式抓握更成熟。",
+        dev: "扶站更穩，可能開始扶著家具走幾步。理解力大增，能聽懂更多詞彙與簡單指令。開始會指東西表達需求。模仿能力增強，喜歡學大人的動作。有物體恆存概念（知道東西被藏起來還存在）。",
+        parent: "安排九個月健兒門診。可引入更多樣化的副食品質地（小塊狀）。開始教簡單的手勢語言（如：再見、要、不要）。多鼓勵寶寶探索，但要注意安全。寶寶可能開始拒絕某些食物，這是正常的。"
+      },
+      {
+        label: "10 個月", date: "2026/8/11 ~ 9/10",
+        growth: "體重約 9~10.5 kg。扶走更加靈活，部分寶寶可能嘗試放手站立幾秒。上排門牙通常也已冒出。",
+        dev: "能精確地用手指撿起小東西。會用手指指向感興趣的東西。開始嘗試說出有意義的第一個詞（通常是「爸爸」或「媽媽」）。能把東西放進容器再拿出來。喜歡模仿打電話、喝水等日常動作。",
+        parent: "副食品質地接近大人食物（軟爛小塊）。可以開始用碗和湯匙讓寶寶練習自己吃飯（會很亂但值得）。注意小物品吞食的風險。持續與寶寶對話，回應他的發音，有助語言發展。"
+      },
+      {
+        label: "11 個月", date: "2026/9/11 ~ 10/10",
+        growth: "體重約 9~11 kg。身體協調能力大幅提升。可能已經能獨立站幾秒鐘甚至嘗試跨步。",
+        dev: "可能踏出人生第一步（但到 18 個月學走路都算正常）。理解更複雜的指令，如「把球給我」。會翻書頁（多頁一起翻）。情緒表達更豐富，會用肢體語言表達想法。社交互動意願增強。",
+        parent: "為寶寶一歲做準備——回顧生長曲線與發展里程碑。開始計畫從奶瓶過渡到杯子。逐漸調整作息為一天一次長午睡。鼓勵寶寶多走動，準備安全的學步環境。"
+      },
+      {
+        label: "滿 1 歲", date: "2026/10/11",
+        growth: "體重約為出生時的 3 倍（約 9~12 kg），身長約 74~78 cm（出生時的 1.5 倍）。通常已有 6~8 顆乳牙。大腦已發展到成人的 60%。",
+        dev: "多數寶寶能獨自站立，部分已經會走幾步。能說 1~3 個有意義的詞彙。能配合簡單指令。用手指指向想要的東西。有明確的喜好與個性展現。記憶力增強，會記得物品的位置。",
+        parent: "安排一歲健兒門診與疫苗（水痘、MMR 等）。飲食接近大人食物，但仍避免蜂蜜以外的高過敏風險物。可開始喝鮮奶。慶祝寶寶的第一個生日！回顧這一年的成長，你們做得很棒！"
+      }
+    ]
+  },
+  vi: {
+    title: "Bảng theo dõi phát triển của bé",
+    subtitle: "Ngày sinh: 11 tháng 10 năm 2025 (12:30 trưa)",
+    personalNote: "Hiện tại bé được <strong>6 tháng 13 ngày</strong>, có thể ngồi một mình khoảng <strong>4 phút</strong>, luôn muốn đứng, khi có người đỡ có thể đứng khoảng <strong>1 phút</strong>. Bé phát triển rất tốt!",
+    legend: ["Phát triển thể chất", "Mốc phát triển", "Lưu ý cho bố mẹ"],
+    badgePast: "Đã qua", badgeCurrent: "Giai đoạn hiện tại", badgeFuture: "Sắp tới",
+    sectionTitles: ["Phát triển thể chất", "Mốc phát triển", "Lưu ý cho bố mẹ"],
+    footer: "Mỗi bé phát triển theo tốc độ riêng, bảng này chỉ mang tính tham khảo. Nếu có thắc mắc, hãy tham khảo ý kiến bác sĩ nhi khoa.",
+    months: [
+      {
+        label: "Sơ sinh", date: "11/10 ~ 10/11/2025",
+        growth: "Cân nặng khoảng 2,5~4 kg, chiều dài khoảng 48~52 cm. Phần lớn thời gian ngủ (16~18 giờ/ngày), bú mỗi 2~3 giờ. Cuống rốn chưa rụng.",
+        dev: "Thị lực mờ, chỉ nhìn rõ trong khoảng 20~30 cm. Có các phản xạ nguyên thủy (nắm, giật mình, mút). Nhận biết được giọng nói và mùi của mẹ.",
+        parent: "Chăm sóc cuống rốn, giữ khô và sạch. Thiết lập nhịp cho bú (sữa mẹ hoặc sữa công thức). Theo dõi vàng da, tái khám nếu cần. Mẹ sau sinh cần nghỉ ngơi và chú ý cảm xúc, bố nên chia sẻ việc chăm con ban đêm."
+      },
+      {
+        label: "1 tháng", date: "11/11 ~ 10/12/2025",
+        growth: "Tăng khoảng 1 kg, dài thêm 3~4 cm. Bắt đầu có nhịp bú đều đặn hơn. Da có thể nổi mụn sữa.",
+        dev: "Nằm sấp có thể ngẩng đầu thoáng qua. Mắt bắt đầu theo dõi vật di chuyển chậm. Thời gian thức dài hơn một chút. Phản ứng với âm thanh, giật mình khi có tiếng động lớn.",
+        parent: "Bắt đầu lịch tiêm chủng (mũi viêm gan B thứ 2). Nói chuyện mặt đối mặt với bé nhiều hơn để tăng gắn kết. Chú ý kỹ thuật vỗ ợ hơi. Quan sát kiểu khóc và nhu cầu của bé."
+      },
+      {
+        label: "2 tháng", date: "11/12/2025 ~ 10/01/2026",
+        growth: "Cân nặng khoảng 5~6 kg. Bắt đầu có \"nụ cười xã hội\" — không còn chỉ cười phản xạ. Giấc ngủ bắt đầu tập trung về ban đêm.",
+        dev: "Nằm sấp ngẩng đầu 45 độ trong thời gian ngắn. Bắt đầu phát ra âm thanh \"gù gù\", \"a a\". Đặc biệt thích nhìn khuôn mặt người. Tay thỉnh thoảng mở ra.",
+        parent: "Tiêm vắc-xin 5 trong 1, phế cầu khuẩn, v.v. Bé bắt đầu phân biệt ngày đêm, có thể thiết lập nếp sinh hoạt đơn giản. Chú ý hình dạng đầu bé (tránh nằm lâu một tư thế), tập tummy time."
+      },
+      {
+        label: "3 tháng", date: "11/01 ~ 10/02/2026",
+        growth: "Cân nặng khoảng 6~7 kg, gấp đôi cân nặng lúc sinh. Cơ cổ khỏe hơn, kiểm soát đầu tiến bộ rõ rệt. Bàn tay bắt đầu có ý thức mở ra và nắm lại.",
+        dev: "Nằm sấp ngẩng đầu ổn định hơn, chống tay dưới. Bắt đầu cười thành tiếng. Hai tay có thể chạm nhau. Bắt đầu thử với tay lấy đồ vật (chưa chính xác lắm). Thích thú khi nhìn mình trong gương.",
+        parent: "Có thể bắt đầu sử dụng thẻ đen trắng/màu sắc kích thích thị giác. Tăng thời gian và tần suất tummy time. Bé chảy nước miếng nhiều hơn (không có nghĩa là sắp mọc răng). Giai đoạn \"khóc chiều\" phổ biến ở 3 tháng có thể đạt đỉnh."
+      },
+      {
+        label: "4 tháng", date: "11/02 ~ 10/03/2026",
+        growth: "Cân nặng khoảng 6,5~7,5 kg. Bắt đầu có dấu hiệu lật (thường lật sấp sang ngửa trước). Nước miếng nhiều, thích cho tay và đồ vật vào miệng.",
+        dev: "Ngẩng đầu vững 90 độ. Với tay lấy đồ chơi chính xác hơn. Phát ra nhiều âm thanh đa dạng hơn, thử bắt chước ngữ điệu. Tò mò hơn với môi trường xung quanh. Nhận ra khuôn mặt quen thuộc.",
+        parent: "Đánh giá xem bé đã sẵn sàng ăn dặm chưa (thường khuyến nghị từ 4~6 tháng). Chú ý an toàn khi bé lật, không để vật mềm trên giường. Chọn đồ gặm nướu an toàn. Có thể bắt đầu thiết lập nghi thức trước khi ngủ."
+      },
+      {
+        label: "5 tháng", date: "11/03 ~ 10/04/2026",
+        growth: "Cân nặng khoảng 7~8 kg. Hầu hết bé đã lật thành thạo. Sức cơ tiếp tục tăng, nằm sấp có thể chống tay nâng phần trên cơ thể.",
+        dev: "Bắt đầu quan tâm đến thức ăn (nhìn người lớn ăn thì chảy nước miếng, với tay). Chuyển đồ vật từ tay này sang tay kia. Bắt đầu nhận biết người lạ. Phát âm liên tục như \"ba-ba\", \"ma-ma\" (nhưng chưa có ý nghĩa).",
+        parent: "Nếu chưa bắt đầu ăn dặm, có thể thử cháo loãng hoặc bột gạo. Phạm vi hoạt động của bé mở rộng, tăng cường an toàn trong nhà. Tiếp tục đọc sách và nói chuyện với bé. Chú ý dấu hiệu mọc răng (nướu sưng đỏ, sốt nhẹ, cáu gắt)."
+      },
+      {
+        label: "6 tháng", date: "11/04 ~ 10/05/2026",
+        growth: "Cân nặng khoảng 7,5~8,5 kg, chiều dài khoảng 65~70 cm. Cân nặng gần gấp 3 lần lúc sinh. Có thể bắt đầu mọc răng đầu tiên (răng cửa dưới). Một số bé bắt đầu tập ngồi.",
+        dev: "Có thể ngồi một mình vài giây (cần hỗ trợ). Phối hợp hai tay tốt hơn, chủ động nắm và khám phá đồ vật. Bắt đầu hiểu quan hệ nhân quả (nhấn nút phát ra âm thanh). Lo lắng khi xa mẹ bắt đầu xuất hiện. Thích chơi ú òa.",
+        parent: "Chính thức bước vào giai đoạn ăn dặm, thử nhiều loại thực phẩm (rau xay, trái cây xay, lòng đỏ trứng, v.v.). Theo dõi phản ứng dị ứng. Đặt lịch khám sức khỏe và tiêm chủng 6 tháng. Bắt đầu dùng cốc tập uống nước. Kiểm tra lại an toàn trong nhà (ổ điện, góc bàn, vật nhỏ)."
+      },
+      {
+        label: "7 tháng", date: "11/05 ~ 10/06/2026",
+        growth: "Cân nặng khoảng 8~9 kg. Ngồi vững hơn, ít cần hỗ trợ. Có thể bắt đầu tư thế bò (lắc lư thân mình). Răng sữa tiếp tục mọc.",
+        dev: "Ngồi vững và dùng hai tay chơi đồ chơi. Bắt đầu thử trườn hoặc bò bụng. Phản ứng khi nghe tên mình, quay đầu lại. Bắt đầu hiểu từ đơn giản như \"không được\". Thích gõ đồ vật tạo tiếng.",
+        parent: "Thức ăn dặm có thể chuyển từ dạng nhuyễn sang dạng nghiền thô. Cất đồ nguy hiểm ở tầm thấp. Có thể giới thiệu finger food (như cà rốt nấu mềm) để bé tập tự ăn. Khuyến khích bò — rất quan trọng cho phát triển não."
+      },
+      {
+        label: "8 tháng", date: "11/06 ~ 10/07/2026",
+        growth: "Cân nặng khoảng 8,5~9,5 kg. Khả năng bò tiến bộ nhanh. Có thể bắt đầu bám đồ vật đứng dậy. Vận động tinh (ngón tay) tiến bộ.",
+        dev: "Dùng ngón cái và ngón trỏ nhặt vật nhỏ (kẹp kiểu gọng kìm bắt đầu). Bò nhanh hơn. Lo lắng khi xa mẹ đạt đỉnh, bám người nhiều hơn. Bắt đầu bắt chước hành động đơn giản (vỗ tay, vẫy tay). Thích ném đồ xuống đất để người lớn nhặt.",
+        parent: "Chú ý an toàn khi bé bò: lắp cổng chắn cầu thang, dán miếng đệm góc bàn. Kiên nhẫn trong giai đoạn lo lắng xa cách, không lẻn đi. Mở rộng các loại thức ăn dặm, có thể ăn 2~3 bữa/ngày. Giấc ngủ có thể bị ảnh hưởng do lo lắng xa mẹ."
+      },
+      {
+        label: "9 tháng", date: "11/07 ~ 10/08/2026",
+        growth: "Cân nặng khoảng 8,5~10 kg. Bám đồ nội thất đi ngang (vịn đi). Vận động tinh linh hoạt hơn, kẹp gọng kìm thuần thục hơn.",
+        dev: "Vịn đứng vững hơn, có thể bám đồ nội thất bước vài bước. Khả năng hiểu tăng vượt bậc, hiểu nhiều từ và mệnh lệnh đơn giản hơn. Bắt đầu chỉ tay để thể hiện nhu cầu. Khả năng bắt chước mạnh hơn, thích học theo hành động người lớn. Có khái niệm \"vật thể vẫn tồn tại\" (biết đồ bị giấu vẫn còn ở đó).",
+        parent: "Đặt lịch khám sức khỏe 9 tháng. Giới thiệu thêm các dạng thức ăn dặm (dạng miếng nhỏ). Bắt đầu dạy ngôn ngữ ký hiệu đơn giản (tạm biệt, muốn, không muốn). Khuyến khích bé khám phá nhưng chú ý an toàn. Bé có thể bắt đầu từ chối một số thức ăn — đây là điều bình thường."
+      },
+      {
+        label: "10 tháng", date: "11/08 ~ 10/09/2026",
+        growth: "Cân nặng khoảng 9~10,5 kg. Vịn đi linh hoạt hơn, một số bé có thể thử buông tay đứng vài giây. Răng cửa trên thường đã mọc.",
+        dev: "Dùng ngón tay nhặt vật nhỏ chính xác. Biết chỉ tay vào thứ quan tâm. Bắt đầu thử nói từ có nghĩa đầu tiên (thường là \"ba ba\" hoặc \"ma ma\"). Có thể bỏ đồ vào hộp rồi lấy ra. Thích bắt chước gọi điện, uống nước như người lớn.",
+        parent: "Thức ăn dặm gần giống thức ăn người lớn (miếng nhỏ mềm). Có thể cho bé tập ăn bằng bát và thìa (sẽ bừa bộn nhưng đáng để tập). Chú ý nguy cơ nuốt vật nhỏ. Tiếp tục nói chuyện với bé, đáp lại các âm thanh bé phát ra — giúp phát triển ngôn ngữ."
+      },
+      {
+        label: "11 tháng", date: "11/09 ~ 10/10/2026",
+        growth: "Cân nặng khoảng 9~11 kg. Khả năng phối hợp cơ thể tăng vượt bậc. Có thể đã đứng một mình vài giây hoặc thử bước đi.",
+        dev: "Có thể bước những bước đầu tiên (nhưng đến 18 tháng mới biết đi vẫn bình thường). Hiểu mệnh lệnh phức tạp hơn, như \"đưa bóng cho ba\". Biết lật trang sách (nhiều trang một lúc). Biểu đạt cảm xúc phong phú hơn, dùng ngôn ngữ cơ thể để thể hiện suy nghĩ. Mong muốn tương tác xã hội tăng.",
+        parent: "Chuẩn bị cho sinh nhật 1 tuổi — xem lại biểu đồ tăng trưởng và các mốc phát triển. Bắt đầu kế hoạch chuyển từ bình sữa sang cốc. Dần điều chỉnh lịch sinh hoạt còn 1 giấc ngủ trưa dài. Khuyến khích bé di chuyển nhiều, chuẩn bị môi trường tập đi an toàn."
+      },
+      {
+        label: "Tròn 1 tuổi", date: "11/10/2026",
+        growth: "Cân nặng gấp 3 lần lúc sinh (khoảng 9~12 kg), chiều dài khoảng 74~78 cm (gấp 1,5 lần lúc sinh). Thường đã có 6~8 răng sữa. Não đã phát triển bằng 60% người trưởng thành.",
+        dev: "Hầu hết bé có thể tự đứng, một số đã đi được vài bước. Nói được 1~3 từ có nghĩa. Làm theo mệnh lệnh đơn giản. Chỉ tay vào thứ muốn lấy. Có sở thích và tính cách rõ ràng. Trí nhớ tốt hơn, nhớ vị trí đồ vật.",
+        parent: "Đặt lịch khám sức khỏe và tiêm chủng 1 tuổi (thủy đậu, MMR, v.v.). Chế độ ăn gần giống người lớn, nhưng vẫn tránh thực phẩm có nguy cơ dị ứng cao ngoài mật ong. Có thể bắt đầu uống sữa tươi. Chúc mừng sinh nhật đầu tiên của bé! Nhìn lại một năm phát triển — bố mẹ đã làm rất tuyệt vời!"
+      }
+    ]
+  }
+};
+
+let currentLang = 'zh';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes(lang === 'zh' ? '中文' : 'Việt'));
+  });
+  render();
+}
+
+function getStatus(m) {
+  const today = new Date(2026, 3, 24);
+  const d = new Date(2025, 9 + m, 11);
+  if (m === 12) return today >= d ? 'past' : 'future';
+  const next = new Date(2025, 9 + m + 1, 11);
+  if (today >= next) return 'past';
+  if (today >= d) return 'current';
+  return 'future';
+}
+
+function calcAge() {
+  const birth = new Date(2025, 9, 11, 12, 30);
+  const now = new Date();
+  let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+  let days = now.getDate() - birth.getDate();
+  if (days < 0) { months--; const prev = new Date(now.getFullYear(), now.getMonth(), 0); days += prev.getDate(); }
+  return { months, days };
+}
+
+function render() {
+  const t = i18n[currentLang];
+  document.getElementById('title').textContent = t.title;
+  document.getElementById('subtitle').textContent = t.subtitle;
+  document.getElementById('personal-note').innerHTML = t.personalNote;
+  document.getElementById('footer').textContent = t.footer;
+  const age = calcAge();
+  const ageEl = document.getElementById('baby-age');
+  if (currentLang === 'zh') {
+    ageEl.textContent = `寶寶今天：${age.months} 個月 ${age.days} 天`;
+  } else {
+    ageEl.textContent = `Bé hôm nay: ${age.months} tháng ${age.days} ngày`;
+  }
+
+  const legendEl = document.getElementById('legend');
+  legendEl.innerHTML = '';
+  const dots = ['growth', 'dev', 'parent'];
+  t.legend.forEach((l, i) => {
+    legendEl.innerHTML += `<span class="legend-item"><span class="dot ${dots[i]}"></span>${l}</span>`;
+  });
+
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+  t.months.forEach((m, i) => {
+    const s = getStatus(i);
+    const badge = s === 'past' ? t.badgePast : s === 'current' ? t.badgeCurrent : t.badgeFuture;
+
+    let personalHtml = '';
+    const zhMonth = i18n.zh.months[i];
+    if (zhMonth.personalZh || zhMonth.personalVi) {
+      const pText = currentLang === 'zh' ? zhMonth.personalZh : zhMonth.personalVi;
+      if (pText) {
+        personalHtml = `<div class="personal-highlight"><strong>${currentLang === 'zh' ? '寶寶的個人紀錄' : 'Ghi chú cá nhân của bé'}:</strong> ${pText}</div>`;
+      }
+    }
+
+    timeline.innerHTML += `
+      <div class="month-card ${s}">
+        <div class="card-header">
+          <h2>${m.label}</h2>
+          <span class="badge ${s}">${badge}</span>
+          <span class="card-date">${m.date}</span>
+        </div>
+        <div class="section">
+          <div class="section-title"><span class="dot growth"></span>${t.sectionTitles[0]}</div>
+          <div class="section-body">${m.growth}</div>
+        </div>
+        <div class="section">
+          <div class="section-title"><span class="dot dev"></span>${t.sectionTitles[1]}</div>
+          <div class="section-body">${m.dev}</div>
+        </div>
+        <div class="section">
+          <div class="section-title"><span class="dot parent"></span>${t.sectionTitles[2]}</div>
+          <div class="section-body">${m.parent}</div>
+        </div>
+        ${personalHtml}
+      </div>
+    `;
+  });
+}
+
+render();
+</script>
+</body>
+</html>
