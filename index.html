@@ -36,6 +36,8 @@ header .sub{font-size:18px;color:#5f5e5a;margin-bottom:8px}
 .section-body{font-size:17px;line-height:1.9;padding-left:18px;color:#444441}
 .personal-highlight{background:#FFF9E6;border-left:4px solid #EF9F27;border-radius:0 10px 10px 0;padding:14px 18px;margin-top:14px;font-size:16px;color:#633806;line-height:1.8}
 .personal-highlight strong{color:#854F0B}
+.qa-entry{border-top:2px dashed #EFD27F;margin-top:14px;padding-top:14px}
+.qa-entry:first-child{border-top:none;margin-top:8px;padding-top:0}
 .collapsible{border:1.5px solid #d3d1c7;border-radius:16px;margin-bottom:16px;overflow:hidden;background:#fff}
 .collapsible-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;background:#fafaf7;user-select:none;transition:background .2s}
 .collapsible-header:hover{background:#f0efe8}
@@ -146,8 +148,16 @@ const i18n = {
         growth: "體重約 7.5~8.5 kg，身長約 65~70 cm。出生體重已接近三倍。可能開始長第一顆牙（下排門牙）。部分寶寶開始嘗試坐。",
         dev: "能獨坐幾秒鐘（需支撐）。雙手協調能力提升，能主動抓握並探索物品。開始理解因果關係（按按鈕會發出聲音）。分離焦慮開始萌芽。喜歡「躲貓貓」遊戲。",
         parent: "正式進入副食品階段，嘗試多種食材（蔬菜泥、水果泥、蛋黃等）。注意過敏反應的觀察。安排六個月健兒門診與疫苗接種。開始使用學習杯練習喝水。居家安全再次檢查（插座、桌角、小物品）。",
-        personalZh: "【6 個月 13 天・2026/4/24 紀錄】獨坐約 4 分鐘（超出同齡平均），一直想站立，扶站可維持約 1 分鐘，核心肌群和腿部力量發展優秀。趴著時已能原地旋轉（pivot），爸爸用手掌在腳底當基座協助練習蹬爬。目前還無法往前爬，會因此對自己生氣——這是正常的挫折反應，代表移動動機很強。醫師建議：多創造地板自由活動時間，使用瑜伽墊/巧拼增加摩擦力，在前方 30~50 cm 放誘因玩具，嘗試用毛巾墊在肚子下方練習四點跪姿，不需急著練站走，優先發展爬行。\n\n【6 個月 13 天・2026/4/24 Q&A】動物性蛋白質（雞肉、豬肉、牛肉）何時可以開始嘗試？——滿 6 個月即可開始，寶寶現在就能試。建議順序：雞肉（最溫和）→ 豬肉 → 牛肉（鐵含量最高）。處理方式：煮熟後打成細泥，可混入已習慣的米糊或蔬菜泥。1 歲前不加鹽、糖等調味料。每次 1-2 小茶匙，每種新食材間隔 2-3 天觀察過敏反應（出疹、腹瀉、嘔吐）。蛋白和帶殼海鮮過敏風險較高，建議晚一點再試；蛋黃可同期嘗試。",
-        personalVi: "【6 tháng 13 ngày・24/04/2026 ghi chú】Ngồi một mình khoảng 4 phút (vượt trội so với bé cùng tháng), luôn muốn đứng, khi có người đỡ đứng được khoảng 1 phút — cơ lõi và chân phát triển rất tốt. Khi nằm sấp đã biết xoay tròn tại chỗ (pivot), bố dùng lòng bàn tay đặt ở lòng bàn chân bé làm điểm tựa để bé tập đạp tiến về phía trước. Hiện chưa bò được về phía trước, bé tự cáu vì không tiến được — đây là phản ứng thất vọng bình thường, cho thấy bé rất muốn di chuyển. Bác sĩ khuyên: tạo nhiều thời gian hoạt động tự do trên sàn, dùng thảm yoga/thảm xốp tăng ma sát, đặt đồ chơi hấp dẫn cách 30~50 cm phía trước, thử dùng khăn cuộn đỡ dưới bụng tập tư thế quỳ 4 điểm, không cần vội tập đứng đi, ưu tiên phát triển bò.\n\n【6 tháng 13 ngày・24/04/2026 Hỏi & Đáp】Khi nào bé có thể thử protein động vật (thịt gà, thịt heo, thịt bò)? — Từ 6 tháng tuổi là có thể bắt đầu, bé hiện tại đã đủ tuổi. Thứ tự khuyến nghị: thịt gà (nhẹ nhàng nhất) → thịt heo → thịt bò (giàu sắt nhất). Cách chế biến: nấu chín rồi xay nhuyễn, có thể trộn vào bột gạo hoặc rau xay mà bé đã quen. Trước 1 tuổi không thêm muối, đường hay gia vị. Mỗi lần 1-2 thìa cà phê, mỗi loại thực phẩm mới cách nhau 2-3 ngày để theo dõi dị ứng (nổi mẩn, tiêu chảy, nôn). Lòng trắng trứng và hải sản có vỏ có nguy cơ dị ứng cao hơn, nên thử muộn hơn; lòng đỏ trứng có thể thử cùng thời điểm."
+        personalEntries: [
+          {
+            zh: "【6 個月 13 天・2026/4/24 紀錄】獨坐約 4 分鐘（超出同齡平均），一直想站立，扶站可維持約 1 分鐘，核心肌群和腿部力量發展優秀。趴著時已能原地旋轉（pivot），爸爸用手掌在腳底當基座協助練習蹬爬。目前還無法往前爬，會因此對自己生氣——這是正常的挫折反應，代表移動動機很強。醫師建議：多創造地板自由活動時間，使用瑜伽墊/巧拼增加摩擦力，在前方 30~50 cm 放誘因玩具，嘗試用毛巾墊在肚子下方練習四點跪姿，不需急著練站走，優先發展爬行。",
+            vi: "【6 tháng 13 ngày・24/04/2026 ghi chú】Ngồi một mình khoảng 4 phút (vượt trội so với bé cùng tháng), luôn muốn đứng, khi có người đỡ đứng được khoảng 1 phút — cơ lõi và chân phát triển rất tốt. Khi nằm sấp đã biết xoay tròn tại chỗ (pivot), bố dùng lòng bàn tay đặt ở lòng bàn chân bé làm điểm tựa để bé tập đạp tiến về phía trước. Hiện chưa bò được về phía trước, bé tự cáu vì không tiến được — đây là phản ứng thất vọng bình thường, cho thấy bé rất muốn di chuyển. Bác sĩ khuyên: tạo nhiều thời gian hoạt động tự do trên sàn, dùng thảm yoga/thảm xốp tăng ma sát, đặt đồ chơi hấp dẫn cách 30~50 cm phía trước, thử dùng khăn cuộn đỡ dưới bụng tập tư thế quỳ 4 điểm, không cần vội tập đứng đi, ưu tiên phát triển bò."
+          },
+          {
+            zh: "【6 個月 13 天・2026/4/24 Q&A】動物性蛋白質（雞肉、豬肉、牛肉）何時可以開始嘗試？——滿 6 個月即可開始，寶寶現在就能試。建議順序：雞肉（最溫和）→ 豬肉 → 牛肉（鐵含量最高）。處理方式：煮熟後打成細泥，可混入已習慣的米糊或蔬菜泥。1 歲前不加鹽、糖等調味料。每次 1-2 小茶匙，每種新食材間隔 2-3 天觀察過敏反應（出疹、腹瀉、嘔吐）。蛋白和帶殼海鮮過敏風險較高，建議晚一點再試；蛋黃可同期嘗試。",
+            vi: "【6 tháng 13 ngày・24/04/2026 Hỏi & Đáp】Khi nào bé có thể thử protein động vật (thịt gà, thịt heo, thịt bò)? — Từ 6 tháng tuổi là có thể bắt đầu, bé hiện tại đã đủ tuổi. Thứ tự khuyến nghị: thịt gà (nhẹ nhàng nhất) → thịt heo → thịt bò (giàu sắt nhất). Cách chế biến: nấu chín rồi xay nhuyễn, có thể trộn vào bột gạo hoặc rau xay mà bé đã quen. Trước 1 tuổi không thêm muối, đường hay gia vị. Mỗi lần 1-2 thìa cà phê, mỗi loại thực phẩm mới cách nhau 2-3 ngày để theo dõi dị ứng (nổi mẩn, tiêu chảy, nôn). Lòng trắng trứng và hải sản có vỏ có nguy cơ dị ứng cao hơn, nên thử muộn hơn; lòng đỏ trứng có thể thử cùng thời điểm."
+          }
+        ]
       },
       {
         label: "7 個月", date: "2026/5/11 ~ 6/10",
@@ -326,11 +336,12 @@ function toggleMiniCard(id) {
 function buildSections(m, i, t) {
   const zhMonth = i18n.zh.months[i];
   let personalHtml = '';
-  if (zhMonth.personalZh || zhMonth.personalVi) {
-    const pText = currentLang === 'zh' ? zhMonth.personalZh : zhMonth.personalVi;
-    if (pText) {
-      personalHtml = `<div class="personal-highlight"><strong>${currentLang === 'zh' ? '寶寶的個人紀錄' : 'Ghi chú cá nhân của bé'}:</strong><br>${pText.replace(/\\n/g, '<br>')}</div>`;
-    }
+  if (zhMonth.personalEntries && zhMonth.personalEntries.length > 0) {
+    const entries = zhMonth.personalEntries.map((entry, idx) => {
+      const text = currentLang === 'zh' ? entry.zh : entry.vi;
+      return `<div class="qa-entry">${text}</div>`;
+    }).join('');
+    personalHtml = `<div class="personal-highlight"><strong>${currentLang === 'zh' ? '寶寶的個人紀錄' : 'Ghi chú cá nhân của bé'}</strong>${entries}</div>`;
   }
   return `
     <div class="section">
